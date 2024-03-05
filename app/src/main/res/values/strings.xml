@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DanamonTest</string>
+
+    <string name="progress_dialog_loading">Please wait…</string>
+    <string name="error_disconnect">Tidak dapat terhubung, check koneksi anda</string>
+    <string name="session_expired_error_toast">Sesi Anda sudah berakhir, silahkan melakukan login ulang</string>
+    <string name="error_default">Terjadi kesalahan</string>
+
+</resources>
