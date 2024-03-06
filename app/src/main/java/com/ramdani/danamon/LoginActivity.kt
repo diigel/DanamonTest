@@ -1,11 +1,26 @@
 package com.ramdani.danamon
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
+import com.ramdani.danamon.base.BaseActivity
+import com.ramdani.danamon.databinding.ActivityLoginBinding
 
-class LoginActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+class LoginActivity : BaseActivity<ActivityLoginBinding>() {
+
+    override fun getUiBinding(): ActivityLoginBinding {
+        return ActivityLoginBinding.inflate(layoutInflater)
     }
+
+    override fun onFirstLaunch(savedInstanceState: Bundle?) {
+        viewBinding?.run {
+
+        }
+    }
+
+    override fun initUiListener() {
+        viewBinding?.run {
+
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.ramdani.danamon.utils.model
+package com.ramdani.danamon.data.response
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
