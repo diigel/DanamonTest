@@ -11,25 +11,21 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.ramdani.danamon.LoginActivity
 import com.ramdani.danamon.R
-import com.ramdani.danamon.utils.extenstions.showToast
 import com.ramdani.danamon.utils.Failure
+import com.ramdani.danamon.utils.extenstions.showToast
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
-    private var mToolbar: Toolbar? = null
     var disposable = CompositeDisposable()
     var viewBinding: VB? = null
     private lateinit var progress: Dialog
     private lateinit var rootView: ViewGroup
 
-    abstract fun bindToolbar(): Toolbar?
     abstract fun getUiBinding(): VB
-    abstract fun enableBackButton(): Boolean
     abstract fun onFirstLaunch(savedInstanceState: Bundle?)
     abstract fun initUiListener()
 
@@ -38,7 +34,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         viewBinding = getUiBinding()
         setContentView(viewBinding?.root)
         rootView = window.decorView.findViewById(android.R.id.content)
-        setupToolbar()
         initProgressDialog()
         onFirstLaunch(savedInstanceState)
         initUiListener()
@@ -50,17 +45,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         viewBinding = null
     }
 
-    private fun setupToolbar() {
-        bindToolbar()?.let {
-            mToolbar = it
-            setSupportActionBar(mToolbar)
-            supportActionBar?.apply {
-                setDisplayShowTitleEnabled(false)
-                setDisplayHomeAsUpEnabled(enableBackButton())
-                setHomeAsUpIndicator(R.drawable.ic_arrow_back)
-            }
-        }
-    }
 
     private fun initProgressDialog() {
         if (!::progress.isInitialized) {

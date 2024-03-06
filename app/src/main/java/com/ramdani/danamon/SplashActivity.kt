@@ -11,23 +11,15 @@ import com.ramdani.danamon.utils.extenstions.loadImage
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
-    override fun bindToolbar(): Toolbar? {
-        return null
-    }
 
     override fun getUiBinding(): ActivitySplashBinding {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
 
-    override fun enableBackButton(): Boolean = true
-
     override fun onFirstLaunch(savedInstanceState: Bundle?) {
        viewBinding?.run {
-           imgSplash.loadImage(BuildConfig.logoUrl)
 
-           showProgress()
            disposable.delay(5000){
-               hideProgress()
                startActivity(Intent(this@SplashActivity,LoginActivity::class.java).apply {
                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)

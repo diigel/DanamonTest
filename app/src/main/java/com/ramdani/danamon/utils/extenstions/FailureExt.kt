@@ -2,7 +2,7 @@ package com.ramdani.danamon.utils.extenstions
 
 import com.google.gson.Gson
 import com.ramdani.danamon.utils.Failure
-import com.ramdani.danamon.utils.model.GeneralResponse
+import com.ramdani.danamon.data.response.GeneralResponse
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException

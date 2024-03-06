@@ -33,11 +33,9 @@ android {
         debug {
             isMinifyEnabled = false
             buildConfigField("String", "baseUrl", keyProperties.getProperty("baseUrl"))
-            buildConfigField("String", "logoUrl", keyProperties.getProperty("logoUrl"))
         }
         release {
             buildConfigField("String", "baseUrl", keyProperties.getProperty("baseUrl"))
-            buildConfigField("String", "logoUrl", keyProperties.getProperty("logoUrl"))
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
