@@ -1,4 +1,4 @@
-package com.ramdani.danamon.base
+package com.ramdani.danamon.core.base
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding

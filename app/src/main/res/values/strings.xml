@@ -5,5 +5,17 @@
     <string name="error_disconnect">Tidak dapat terhubung, check koneksi anda</string>
     <string name="session_expired_error_toast">Sesi Anda sudah berakhir, silahkan melakukan login ulang</string>
     <string name="error_default">Terjadi kesalahan</string>
+    <string name="username_text">Username</string>
+    <string name="password_text">Password</string>
+    <string name="sign_in_text">Sign In</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="logo">Logo</string>
+    <string name="or_text">Or</string>
+    <string name="account_not_found_text">Account Not Found</string>
+    <string name="register_account_text">Register Account</string>
+    <string name="please_choose_role_text">Please Choose Role</string>
+    <string name="email_text">Email</string>
+    <string name="button_back_text">Button Back</string>
+
 
 </resources>

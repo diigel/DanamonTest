@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -52,10 +53,22 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/NOTICE",
+                "META-INF/LICENCE",
+                "META-INF/LICENCE.txt",
+                "META-INF/NOTICE.txt",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -71,9 +84,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     /** RxLibrary */
+    implementation("io.reactivex.rxjava2:rxjava:2.2.10")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.10")
     implementation("com.jakewharton.rxbinding3:rxbinding:3.1.0")
 
     /** Koin */
@@ -84,5 +97,15 @@ dependencies {
     /** Glide */
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    /** Room Database */
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-rxjava2:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    /** Lifecycle */
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
 }

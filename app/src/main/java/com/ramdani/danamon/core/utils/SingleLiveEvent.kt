@@ -1,4 +1,4 @@
-package com.ramdani.danamon.utils
+package com.ramdani.danamon.core.utils
 
 import androidx.annotation.MainThread
 import androidx.collection.ArraySet
