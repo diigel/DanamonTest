@@ -24,7 +24,7 @@ class PhotoPagingSource(private val service: Service) : RxPagingSource<Int,Respo
                 LoadResult.Page(
                     data = data,
                     prevKey = if (page == 1) null else page - 1,
-                    nextKey = null
+                    nextKey = if (data.isEmpty()) null else page + 1
                 ) as LoadResult<Int,ResponseDataPhoto>
             }
             .onErrorReturn { e ->
