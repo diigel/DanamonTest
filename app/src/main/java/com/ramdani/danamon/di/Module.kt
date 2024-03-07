@@ -6,10 +6,13 @@ import com.ramdani.danamon.core.base.NetworkHandler
 import com.ramdani.danamon.data.Service
 import com.ramdani.danamon.data.local.DatabaseConfig
 import com.ramdani.danamon.data.local.dao.UserDao
+import com.ramdani.danamon.data.repository.PhotoRepository
 import com.ramdani.danamon.data.repository.UserRepository
+import com.ramdani.danamon.data.repositoryImpl.PhotoRepositoryImpl
 import com.ramdani.danamon.data.repositoryImpl.UserRepositoryImpl
 import com.ramdani.danamon.presentation.auth.login.LoginVM
 import com.ramdani.danamon.presentation.auth.register.RegisterVM
+import com.ramdani.danamon.presentation.main.user.UserMainVM
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -74,6 +77,18 @@ val register = module {
             ioScheduler = get(qualifier(ioSchedulers)),
             networkHandler = get(),
             userRepository = get()
+        )
+    }
+}
+
+val userMain = module {
+    single<PhotoRepository> { PhotoRepositoryImpl(get()) }
+    viewModel {
+        UserMainVM(
+            uiScheduler = get(qualifier(uiSchedulers)),
+            ioScheduler = get(qualifier(ioSchedulers)),
+            networkHandler = get(),
+            repository = get()
         )
     }
 }

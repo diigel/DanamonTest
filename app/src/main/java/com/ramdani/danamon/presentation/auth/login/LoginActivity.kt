@@ -2,17 +2,17 @@ package com.ramdani.danamon.presentation.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.ramdani.danamon.R
-import com.ramdani.danamon.core.base.BaseActivity
 import com.ramdani.danamon.core.base.BaseActivityVM
+import com.ramdani.danamon.core.enums.UserRole
 import com.ramdani.danamon.core.extenstions.observe
 import com.ramdani.danamon.core.extenstions.showToast
 import com.ramdani.danamon.core.utils.Failure
 import com.ramdani.danamon.data.local.entity.UserEntity
 import com.ramdani.danamon.databinding.ActivityLoginBinding
 import com.ramdani.danamon.presentation.auth.register.RegisterActivity
-import com.ramdani.danamon.presentation.main.MainActivity
+import com.ramdani.danamon.presentation.main.AdminMainActivity
+import com.ramdani.danamon.presentation.main.user.UserMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivityVM<ActivityLoginBinding, LoginVM>() {
@@ -30,7 +30,11 @@ class LoginActivity : BaseActivityVM<ActivityLoginBinding, LoginVM>() {
 
     private fun handleGetAccount(userEntity: UserEntity?) {
         if (userEntity != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            if (userEntity.role == UserRole.ADMIN){
+                startActivity(AdminMainActivity.createIntent(this@LoginActivity, true, userEntity))
+            }else {
+                startActivity(UserMainActivity.createIntent(this@LoginActivity, true, userEntity))
+            }
         } else {
             showToast(getString(R.string.account_not_found_text))
         }
@@ -57,7 +61,7 @@ class LoginActivity : BaseActivityVM<ActivityLoginBinding, LoginVM>() {
     override fun handleFailure(failure: Failure?) {
         if (failure is Failure.DataNotExist) {
             showToast(getString(R.string.account_not_found_text))
-        }else {
+        } else {
             super.handleFailure(failure)
         }
     }
