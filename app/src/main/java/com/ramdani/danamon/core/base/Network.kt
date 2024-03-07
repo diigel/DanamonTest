@@ -1,4 +1,4 @@
-package com.ramdani.danamon.base
+package com.ramdani.danamon.core.base
 
 import com.ramdani.danamon.BuildConfig
 import okhttp3.OkHttpClient

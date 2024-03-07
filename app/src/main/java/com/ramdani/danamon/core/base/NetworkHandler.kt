@@ -1,4 +1,4 @@
-package com.ramdani.danamon.utils
+package com.ramdani.danamon.core.base
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +7,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 
 class NetworkHandler(private val context: Context) {
-    @SuppressLint("MissingPermission", "ObsoleteSdkInt")
+    @SuppressLint("MissingPermission")
     fun isNetworkAvailable(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

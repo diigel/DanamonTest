@@ -1,10 +1,13 @@
-package com.ramdani.danamon.utils.extenstions
+package com.ramdani.danamon.core.extenstions
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,8 +32,8 @@ fun Disposable.disposedBy(compositeDisposable: CompositeDisposable) {
 
 fun ImageView.loadImage(
     path: String?,
-    @DrawableRes errorImage: Int = R.drawable.ic_img_error,
-    @DrawableRes placeholder: Int = R.drawable.ic_img_placeholder,
+    @DrawableRes errorImage: Int = R.drawable.img_error,
+    @DrawableRes placeholder: Int = R.drawable.img_placeholder,
     isNotFound: (() -> Unit)? = null
 ) {
     Glide.with(this)
@@ -80,3 +83,6 @@ fun CompositeDisposable.delay(long: Long, action: () -> Unit) {
         }
     add(disposable)
 }
+
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
+    liveData.observe(this, Observer(body))

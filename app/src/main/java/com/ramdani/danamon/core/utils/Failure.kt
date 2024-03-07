@@ -1,4 +1,4 @@
-package com.ramdani.danamon.utils
+package com.ramdani.danamon.core.utils
 
 sealed class Failure {
     object NetworkConnection : Failure()

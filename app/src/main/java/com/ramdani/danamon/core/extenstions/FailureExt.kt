@@ -1,7 +1,7 @@
-package com.ramdani.danamon.utils.extenstions
+package com.ramdani.danamon.core.extenstions
 
 import com.google.gson.Gson
-import com.ramdani.danamon.utils.Failure
+import com.ramdani.danamon.core.utils.Failure
 import com.ramdani.danamon.data.response.GeneralResponse
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,10 +25,6 @@ fun Throwable.generalErrorServer(): Failure {
 
                     this.code() == 401 -> {
                         return Failure.ExpiredSession
-                    }
-
-                    this.code() == 413 -> {
-                        return Failure.DataNotExist("Ukuran file/input terlalu besar, mohon input kembali")
                     }
 
                     this.code() == 202 -> {

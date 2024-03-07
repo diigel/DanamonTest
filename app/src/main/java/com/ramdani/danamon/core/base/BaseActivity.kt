@@ -1,4 +1,4 @@
-package com.ramdani.danamon.base
+package com.ramdani.danamon.core.base
 
 import android.app.Dialog
 import android.content.Intent
@@ -12,10 +12,10 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.ramdani.danamon.LoginActivity
+import com.ramdani.danamon.presentation.auth.login.LoginActivity
 import com.ramdani.danamon.R
-import com.ramdani.danamon.utils.Failure
-import com.ramdani.danamon.utils.extenstions.showToast
+import com.ramdani.danamon.core.utils.Failure
+import com.ramdani.danamon.core.extenstions.showToast
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
@@ -93,7 +93,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
             is Failure.ExpiredSession -> {
                 showToast(getString(R.string.session_expired_error_toast))
-                startActivity(Intent(this,LoginActivity::class.java).apply {
+                startActivity(Intent(this, LoginActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 })

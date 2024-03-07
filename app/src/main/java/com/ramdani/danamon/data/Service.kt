@@ -1,6 +1,6 @@
 package com.ramdani.danamon.data
 
-import com.ramdani.danamon.base.Network
+import com.ramdani.danamon.core.base.Network
 import com.ramdani.danamon.data.response.ResponseDataHome
 import io.reactivex.Flowable
 import retrofit2.http.GET
