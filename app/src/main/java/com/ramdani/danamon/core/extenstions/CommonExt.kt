@@ -1,7 +1,10 @@
 package com.ramdani.danamon.core.extenstions
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build.VERSION.SDK_INT
+import android.os.Parcelable
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -33,8 +36,7 @@ fun Disposable.disposedBy(compositeDisposable: CompositeDisposable) {
 fun ImageView.loadImage(
     path: String?,
     @DrawableRes errorImage: Int = R.drawable.img_error,
-    @DrawableRes placeholder: Int = R.drawable.img_placeholder,
-    isNotFound: (() -> Unit)? = null
+    @DrawableRes placeholder: Int = R.drawable.img_placeholder
 ) {
     Glide.with(this)
         .load(path)
@@ -42,31 +44,6 @@ fun ImageView.loadImage(
         .error(errorImage)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true)
-        .listener(object : RequestListener<Drawable> {
-
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>,
-                isFirstResource: Boolean,
-            ): Boolean {
-                if (e?.message?.contains("404") == true) {
-                    isNotFound?.invoke()
-                    e.generalErrorServer()
-                }
-                return false // return false to let Glide's error placeholder take over
-            }
-
-            override fun onResourceReady(
-                resource: Drawable,
-                model: Any,
-                target: Target<Drawable>?,
-                dataSource: DataSource,
-                isFirstResource: Boolean,
-            ): Boolean {
-                return false // return false if you don't want Glide to handle any further handling
-            }
-        })
         .into(this)
 }
 
@@ -84,5 +61,9 @@ fun CompositeDisposable.delay(long: Long, action: () -> Unit) {
     add(disposable)
 }
 
-fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
-    liveData.observe(this, Observer(body))
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) = liveData.observe(this, Observer(body))
+
+inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+}

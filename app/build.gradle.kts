@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -84,10 +85,12 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     /** RxLibrary */
-    implementation("io.reactivex.rxjava2:rxjava:2.2.10")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.2")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
     implementation("com.jakewharton.rxbinding3:rxbinding:3.1.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("androidx.paging:paging-rxjava2-ktx:3.2.1")
 
     /** Koin */
     implementation("io.insert-koin:koin-androidx-scope:2.2.3")
