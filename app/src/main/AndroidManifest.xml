@@ -18,7 +18,7 @@
             android:name=".presentation.main.user.UserMainActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.SplashActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
             android:name=".presentation.auth.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.main.AdminMainActivity"
+            android:name=".presentation.main.admin.AdminMainActivity"
             android:exported="true" />
     </application>
 

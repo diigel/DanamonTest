@@ -3,16 +3,19 @@ package com.ramdani.danamon.di
 import android.app.Application
 import androidx.room.Room
 import com.ramdani.danamon.core.base.NetworkHandler
+import com.ramdani.danamon.core.base.SharedPreferencesHelper
 import com.ramdani.danamon.data.Service
-import com.ramdani.danamon.data.local.DatabaseConfig
-import com.ramdani.danamon.data.local.dao.UserDao
+import com.ramdani.danamon.data.local.database.DatabaseConfig
+import com.ramdani.danamon.data.local.dao.AccountDao
 import com.ramdani.danamon.data.repository.PhotoRepository
-import com.ramdani.danamon.data.repository.UserRepository
+import com.ramdani.danamon.data.repository.AccountRepository
 import com.ramdani.danamon.data.repositoryImpl.PhotoRepositoryImpl
-import com.ramdani.danamon.data.repositoryImpl.UserRepositoryImpl
+import com.ramdani.danamon.data.repositoryImpl.AccountRepositoryImpl
 import com.ramdani.danamon.presentation.auth.login.LoginVM
 import com.ramdani.danamon.presentation.auth.register.RegisterVM
+import com.ramdani.danamon.presentation.main.admin.AdminMainVM
 import com.ramdani.danamon.presentation.main.user.UserMainVM
+import com.ramdani.danamon.presentation.splash.SplashVM
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -29,6 +32,7 @@ val common = module {
     single(qualifier(ioSchedulers)) { Schedulers.io() }
     single<Scheduler>(qualifier(uiSchedulers)) { AndroidSchedulers.mainThread() }
     single { NetworkHandler(androidContext()) }
+    single { SharedPreferencesHelper(get()) }
 }
 
 val service = module {
@@ -45,7 +49,7 @@ val database = module {
         ).fallbackToDestructiveMigration().build()
     }
 
-    fun provideFavoriteDao(database: DatabaseConfig): UserDao {
+    fun provideFavoriteDao(database: DatabaseConfig): AccountDao {
         return database.userDao()
     }
     single {
@@ -55,8 +59,8 @@ val database = module {
     single { provideFavoriteDao(get()) }
 }
 
-val userRepository = module {
-    single<UserRepository> { UserRepositoryImpl(get()) }
+val accountRepository = module {
+    single<AccountRepository> { AccountRepositoryImpl(get()) }
 }
 
 val login = module {
@@ -65,7 +69,8 @@ val login = module {
             uiScheduler = get(qualifier(uiSchedulers)),
             ioScheduler = get(qualifier(ioSchedulers)),
             networkHandler = get(),
-            userRepository = get()
+            accountRepository = get(),
+            sharedPreferencesHelper = get()
         )
     }
 }
@@ -76,7 +81,7 @@ val register = module {
             uiScheduler = get(qualifier(uiSchedulers)),
             ioScheduler = get(qualifier(ioSchedulers)),
             networkHandler = get(),
-            userRepository = get()
+            accountRepository = get()
         )
     }
 }
@@ -88,7 +93,32 @@ val userMain = module {
             uiScheduler = get(qualifier(uiSchedulers)),
             ioScheduler = get(qualifier(ioSchedulers)),
             networkHandler = get(),
-            repository = get()
+            repository = get(),
+            accountRepository = get()
+        )
+    }
+}
+
+val adminMain = module {
+    viewModel {
+        AdminMainVM(
+            uiSchedulers = get(qualifier(uiSchedulers)),
+            ioSchedulers = get(qualifier(ioSchedulers)),
+            networkHandler = get(),
+            accountRepository = get(),
+            sharedPreferencesHelper = get()
+        )
+    }
+}
+
+val splash = module {
+    viewModel {
+        SplashVM(
+            uiSchedulers = get(qualifier(uiSchedulers)),
+            ioSchedulers = get(qualifier(ioSchedulers)),
+            networkHandler = get(),
+            accountRepository = get(),
+            sharedPreferencesHelper = get()
         )
     }
 }

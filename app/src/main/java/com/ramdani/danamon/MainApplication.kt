@@ -8,7 +8,9 @@ import com.ramdani.danamon.di.login
 import com.ramdani.danamon.di.register
 import com.ramdani.danamon.di.service
 import com.ramdani.danamon.di.userMain
-import com.ramdani.danamon.di.userRepository
+import com.ramdani.danamon.di.accountRepository
+import com.ramdani.danamon.di.adminMain
+import com.ramdani.danamon.di.splash
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -23,10 +25,12 @@ class MainApplication : Application() {
                 common,
                 database,
                 service,
-                userRepository,
+                accountRepository,
                 login,
                 register,
-                userMain
+                userMain,
+                adminMain,
+                splash
             )
         }
     }

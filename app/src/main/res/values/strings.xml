@@ -17,6 +17,11 @@
     <string name="email_text">Email</string>
     <string name="button_back_text">Button Back</string>
     <string name="photo_list_text">Photo List</string>
+    <string name="image_trash_text">Image Trash</string>
+    <string name="image_edit_text">Image Edit</string>
+    <string name="user_list_text">User List</string>
+    <string name="update_user_text">Update User</string>
+    <string name="sign_out_text">Sign Out</string>
 
 
 </resources>
