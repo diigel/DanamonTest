@@ -8,17 +8,23 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramdani.danamon.core.base.BaseActivityVM
 import com.ramdani.danamon.core.extenstions.observe
-import com.ramdani.danamon.data.local.entity.UserEntity
+import com.ramdani.danamon.core.extenstions.parcelable
+import com.ramdani.danamon.data.local.entity.AccountEntity
 import com.ramdani.danamon.data.response.ResponseDataPhoto
 import com.ramdani.danamon.databinding.ActivityUserMainBinding
-import com.ramdani.danamon.presentation.main.AdminMainActivity
+import com.ramdani.danamon.presentation.auth.login.LoginActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserMainActivity : BaseActivityVM<ActivityUserMainBinding, UserMainVM>() {
 
+    private val accountEntity by lazy {
+        intent.parcelable<AccountEntity>(ACCOUNT_DATA)
+    }
+
     private val photoAdapter by lazy {
         PhotoAdapter()
     }
+
     override fun bindViewModel(): UserMainVM {
         val viewModel: UserMainVM by viewModel()
         return viewModel
@@ -28,6 +34,16 @@ class UserMainActivity : BaseActivityVM<ActivityUserMainBinding, UserMainVM>() {
         observe(viewModel.failureLiveData,::handleFailure)
         observe(viewModel.photoEvent, ::handlePhotoEvent)
         observe(viewModel.progressBarEvent, ::handleLoadingPaging)
+        observe(viewModel.updateActiveAccountEvent, ::handleSignOut)
+    }
+
+    private fun handleSignOut(isSignOut: Boolean?) {
+        if (isSignOut == true){
+            startActivity(Intent(this@UserMainActivity, LoginActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            })
+        }
     }
 
     private fun handleLoadingPaging(isShow: Boolean?) {
@@ -56,20 +72,22 @@ class UserMainActivity : BaseActivityVM<ActivityUserMainBinding, UserMainVM>() {
 
     override fun initUiListener() {
         viewBinding?.run {
-
+            btnLogout.setOnClickListener {
+                baseViewModel?.updateActiveAccount(accountEntity?.id ?: -1,accountEntity?.isActive ?: false)
+            }
         }
     }
 
     companion object {
-        private const val USER_DATA = "UserMainActivity.User.Data"
+        private const val ACCOUNT_DATA = "UserMainActivity.Account.Data"
 
-        fun createIntent(context: Context, flags: Boolean, userEntity: UserEntity) : Intent {
+        fun createIntent(context: Context, flags: Boolean, accountEntity: AccountEntity) : Intent {
             return Intent(context, UserMainActivity::class.java).apply {
                 if (flags){
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 }
-                putExtra(USER_DATA,userEntity)
+                putExtra(ACCOUNT_DATA,accountEntity)
             }
         }
     }

@@ -8,10 +8,10 @@ import com.ramdani.danamon.core.enums.UserRole
 import com.ramdani.danamon.core.extenstions.observe
 import com.ramdani.danamon.core.extenstions.showToast
 import com.ramdani.danamon.core.utils.Failure
-import com.ramdani.danamon.data.local.entity.UserEntity
+import com.ramdani.danamon.data.local.entity.AccountEntity
 import com.ramdani.danamon.databinding.ActivityLoginBinding
 import com.ramdani.danamon.presentation.auth.register.RegisterActivity
-import com.ramdani.danamon.presentation.main.AdminMainActivity
+import com.ramdani.danamon.presentation.main.admin.AdminMainActivity
 import com.ramdani.danamon.presentation.main.user.UserMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,12 +28,18 @@ class LoginActivity : BaseActivityVM<ActivityLoginBinding, LoginVM>() {
         observe(viewModel.getAccount, ::handleGetAccount)
     }
 
-    private fun handleGetAccount(userEntity: UserEntity?) {
-        if (userEntity != null) {
-            if (userEntity.role == UserRole.ADMIN){
-                startActivity(AdminMainActivity.createIntent(this@LoginActivity, true, userEntity))
+    private fun handleGetAccount(accountEntity: AccountEntity?) {
+        if (accountEntity != null) {
+            baseViewModel?.let {
+                it.saveIsActive(true)
+                it.saveUsername(accountEntity.username)
+                it.savePassword(accountEntity.password)
+                it.saveUserId(accountEntity.id)
+            }
+            if (accountEntity.role == UserRole.ADMIN){
+                startActivity(AdminMainActivity.createIntent(this@LoginActivity, true, accountEntity))
             }else {
-                startActivity(UserMainActivity.createIntent(this@LoginActivity, true, userEntity))
+                startActivity(UserMainActivity.createIntent(this@LoginActivity, true, accountEntity))
             }
         } else {
             showToast(getString(R.string.account_not_found_text))

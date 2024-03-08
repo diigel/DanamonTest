@@ -5,17 +5,23 @@ import android.widget.ArrayAdapter
 import androidx.core.view.isGone
 import com.jakewharton.rxbinding3.widget.itemSelections
 import com.jakewharton.rxbinding3.widget.textChanges
+import com.ramdani.danamon.R
 import com.ramdani.danamon.core.base.BaseActivityVM
 import com.ramdani.danamon.core.enums.UserRole
 import com.ramdani.danamon.core.extenstions.disposedBy
 import com.ramdani.danamon.core.extenstions.observe
+import com.ramdani.danamon.core.extenstions.parcelable
 import com.ramdani.danamon.core.extenstions.showToast
-import com.ramdani.danamon.data.local.entity.UserEntity
+import com.ramdani.danamon.data.local.entity.AccountEntity
 import com.ramdani.danamon.databinding.ActivityRegisterBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.random.Random
 
 class RegisterActivity : BaseActivityVM<ActivityRegisterBinding, RegisterVM>() {
 
+    private val accountEntity by lazy {
+        intent?.parcelable<AccountEntity>("userEntity")
+    }
     private val spinnerList by lazy {
         listOf(
             "-- Pilih --",
@@ -45,17 +51,28 @@ class RegisterActivity : BaseActivityVM<ActivityRegisterBinding, RegisterVM>() {
         observe(viewModel.passwordEvent, ::handlePasswordEvent)
         observe(viewModel.spinnerEvent, ::handleRoleEvent)
         observe(viewModel.createAccount, ::handleCreateAccount)
+        observe(viewModel.updateAccount, ::handleUpdateAccount)
+    }
+
+    private fun handleUpdateAccount(pair: Pair<Boolean, String>?) {
+        if (pair?.first == true) {
+            showToast(pair.second)
+            setResult(RESULT_OK)
+            finish()
+        } else {
+            showToast(pair?.second.orEmpty())
+        }
     }
 
     private fun handleRoleEvent(userRole: UserRole?) {
         viewBinding?.txtErrorSpinner?.isGone = userRole != null && userRole != UserRole.NONE
     }
 
-    private fun handleCreateAccount(pair : Pair<Boolean,String>?) {
-        if (pair?.first == true){
+    private fun handleCreateAccount(pair: Pair<Boolean, String>?) {
+        if (pair?.first == true) {
             showToast(pair.second)
             finish()
-        }else {
+        } else {
             showToast(pair?.second.orEmpty())
         }
     }
@@ -85,6 +102,20 @@ class RegisterActivity : BaseActivityVM<ActivityRegisterBinding, RegisterVM>() {
     override fun onFirstLaunch(savedInstanceState: Bundle?) {
         viewBinding?.run {
             spinnerRole.adapter = spinnerAdapter
+
+            if (accountEntity != null) {
+                spinnerRole.setSelection(if (accountEntity?.role == UserRole.ADMIN) 1 else 2)
+                etEmail.setText(accountEntity?.email)
+                etUsername.setText(accountEntity?.username)
+                etPassword.setText(accountEntity?.password)
+                txtTitle.text = getString(R.string.update_user_text)
+                btnRegister.text = getString(R.string.update_user_text)
+
+                baseViewModel?.emailEvent?.value = accountEntity?.email
+                baseViewModel?.usernameEvent?.value = accountEntity?.username
+                baseViewModel?.passwordEvent?.value = accountEntity?.password
+                baseViewModel?.spinnerEvent?.value = accountEntity?.role
+            }
         }
     }
 
@@ -138,17 +169,30 @@ class RegisterActivity : BaseActivityVM<ActivityRegisterBinding, RegisterVM>() {
                     email.isEmpty() -> handleUsernameEvent(username)
                     username.isEmpty() -> handleUsernameEvent(username)
                     password.isEmpty() -> handlePasswordEvent(password)
-                    role == UserRole.NONE -> {}
+                    role == UserRole.NONE -> handleRoleEvent(role)
 
                     else -> {
-                        baseViewModel?.createAccount(
-                            UserEntity(
-                                email = email,
-                                username = username,
-                                password = password,
-                                role = role
+                        if (accountEntity != null) {
+                            baseViewModel?.updateAccount(
+                                AccountEntity(
+                                    email = email,
+                                    username = username,
+                                    password = password,
+                                    role = role,
+                                    isActive = accountEntity?.isActive ?: false
+                                )
                             )
-                        )
+                        } else {
+                            baseViewModel?.createAccount(
+                                AccountEntity(
+                                    email = email,
+                                    username = username,
+                                    password = password,
+                                    role = role,
+                                    isActive = false
+                                )
+                            )
+                        }
                     }
                 }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.user.UserMainActivity">
+    tools:context=".presentation.main.admin.AdminMainActivity">
 
     <TextView
         android:id="@+id/txtTitle"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/photo_list_text"
+        android:text="@string/user_list_text"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -20,27 +20,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPhoto"
+        android:id="@+id/rvAccount"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle"
         tools:itemCount="5"
-        tools:listitem="@layout/item_list_photo" />
-
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        android:indeterminateTint="@color/primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rvPhoto"
-        app:layout_constraintStart_toStartOf="@+id/rvPhoto" />
+        tools:listitem="@layout/item_list_user" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
